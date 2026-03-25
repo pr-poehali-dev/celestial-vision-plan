@@ -2,8 +2,6 @@ import { useState } from "react"
 import { Toaster } from "@/components/ui/toaster"
 import { Avatar } from "@/components/Avatar"
 import { SocialIcon } from "@/components/SocialIcon"
-import { XIcon } from "@/components/icons/x-icon"
-import { InstagramIcon } from "@/components/icons/instagram-icon"
 import Icon from "@/components/ui/icon"
 
 const backgroundStyle = `
@@ -100,14 +98,18 @@ export default function Index() {
 
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <a
-              href="#"
+              href="https://t.me/RTrader11"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200"
             >
               <Icon name="Send" size={18} />
               В Telegram‑канал
             </a>
             <a
-              href="#"
+              href="https://web-app-hosting--preview.poehali.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold px-6 py-3 rounded-xl transition-all duration-200"
             >
               <Icon name="Crown" size={18} />
@@ -182,7 +184,9 @@ export default function Index() {
             ))}
           </div>
           <a
-            href="#"
+            href="https://web-app-hosting--preview.poehali.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold px-8 py-3 rounded-xl transition-all duration-200"
           >
             <Icon name="Crown" size={18} />
@@ -222,8 +226,8 @@ export default function Index() {
               RT
             </div>
             <div className="text-center sm:text-left">
-              <h3 className="text-xl font-bold mb-1">Автор RTrader</h3>
-              <p className="text-blue-400 text-sm mb-4">Практикующий трейдер</p>
+                  <h3 className="text-xl font-bold mb-1">@zeryansky7</h3>
+              <p className="text-blue-400 text-sm mb-4">Практикующий трейдер · Автор RTrader</p>
               <div className="space-y-2 text-sm text-gray-300">
                 <div className="flex items-center gap-2 justify-center sm:justify-start">
                   <Icon name="Calendar" size={15} className="text-gray-500" />
@@ -284,29 +288,42 @@ export default function Index() {
             <span className="font-bold">RTrader</span>
           </div>
           <p className="text-gray-500 text-sm mb-6">Торгуй осознанно. Расти вместе с рынком.</p>
-          <div className="flex justify-center gap-5 mb-6">
+          <div className="flex justify-center gap-5 mb-4 flex-wrap">
             <SocialIcon
-              href="#"
+              href="https://t.me/RTrader11"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Telegram"
+              aria-label="Telegram-канал"
               icon={<Icon name="Send" size={20} className="text-gray-400 hover:text-white transition-colors" />}
             />
             <SocialIcon
-              href="#"
+              href="https://vk.com/RTrader11"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="X (Twitter)"
-              icon={<XIcon className="w-5 h-5" />}
+              aria-label="VK"
+              icon={<Icon name="Users" size={20} className="text-gray-400 hover:text-white transition-colors" />}
             />
             <SocialIcon
-              href="#"
+              href="https://rutube.ru/channel/71487062"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Instagram"
-              icon={<InstagramIcon className="w-5 h-5" />}
+              aria-label="RUTUBE"
+              icon={<Icon name="Play" size={20} className="text-gray-400 hover:text-white transition-colors" />}
+            />
+            <SocialIcon
+              href="https://www.tbank.ru/invest/social/profile/RTrader11/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Т-пульс"
+              icon={<Icon name="TrendingUp" size={20} className="text-gray-400 hover:text-white transition-colors" />}
             />
           </div>
+          <div className="flex justify-center gap-4 mb-4 text-sm">
+            <a href="https://t.me/+We1CNiMHWOYxOWQy" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 transition-colors">Чат</a>
+            <a href="https://t.me/RTraderReviews" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 transition-colors">Отзывы</a>
+            <a href="https://t.me/+oph99Gpiy_FmYjUy" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 transition-colors">База знаний</a>
+          </div>
+          <p className="text-gray-700 text-xs mb-2">Информация в канале не является индивидуальной инвестиционной рекомендацией.</p>
           <p className="text-gray-600 text-xs">© 2025 RTrader · Все права защищены</p>
         </footer>
 
