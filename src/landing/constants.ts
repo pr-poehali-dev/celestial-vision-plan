@@ -3,6 +3,7 @@
 export const LINKS = {
   telegram:    "https://t.me/RTrader11",
   vipApp:      "https://web-app-hosting--preview.poehali.dev/",
+  vipBot:      "https://t.me/RTraderVIP_bot",
   reflections: "https://t.me/traders_reflections",
   tournaments: "https://web-app-hosting--preview.poehali.dev/", // временный — заменить на URL сайта‑хаба
   chat:        "https://t.me/+We1CNiMHWOYxOWQy",
@@ -44,16 +45,17 @@ export const backgroundStyle = `
 
   /* Навигация */
   .nav-bar {
-    background: rgba(13,14,44,0.85);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(10,11,36,0.88);
+    border-bottom: 1px solid rgba(255,255,255,0.09);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
   }
   .nav-pill {
     color: rgba(255,255,255,0.55);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
-    padding: 6px 14px;
+    padding: 7px 15px;
     border-radius: 999px;
     white-space: nowrap;
     transition: color 0.2s, background 0.2s;
@@ -64,7 +66,7 @@ export const backgroundStyle = `
   }
   .nav-pill:hover, .nav-pill.active {
     color: #fff;
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.09);
   }
   .nav-scroll {
     overflow-x: auto;
@@ -77,9 +79,18 @@ export const backgroundStyle = `
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.07);
     backdrop-filter: blur(4px);
-    transition: border-color 0.2s;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
   }
-  .card-glass:hover { border-color: rgba(255,255,255,0.14); }
+  .card-glass:hover {
+    transform: translateY(-3px);
+    border-color: rgba(99,102,241,0.3);
+    box-shadow: 0 8px 28px rgba(99,102,241,0.12);
+  }
+  .card-glass:hover .card-icon {
+    transform: scale(1.12);
+    transition: transform 0.18s ease;
+  }
+  .card-icon { transition: transform 0.18s ease; }
   .vip-card {
     background: linear-gradient(135deg, rgba(255,180,0,0.1), rgba(255,60,80,0.06));
     border: 1px solid rgba(255,180,0,0.2);
@@ -87,10 +98,43 @@ export const backgroundStyle = `
   .faq-item { border-bottom: 1px solid rgba(255,255,255,0.05); }
 
   /* Кнопки */
-  .btn-primary { background: linear-gradient(135deg, #3b82f6, #6366f1); transition: opacity 0.2s; }
-  .btn-primary:hover { opacity: 0.88; }
-  .btn-vip { background: linear-gradient(135deg, #FFB800, #FF3C50); transition: opacity 0.2s; }
-  .btn-vip:hover { opacity: 0.88; }
+  .btn-primary { background: linear-gradient(135deg, #3b82f6, #6366f1); transition: opacity 0.2s, transform 0.15s; }
+  .btn-primary:hover { opacity: 0.88; transform: scale(1.03); }
+  .btn-vip { background: linear-gradient(135deg, #FFB800, #FF3C50); transition: opacity 0.2s, transform 0.15s; }
+  .btn-vip:hover { opacity: 0.88; transform: scale(1.03); }
+  .btn-sm-web {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s;
+  }
+  .btn-sm-web:hover { opacity: 0.88; transform: scale(1.03); box-shadow: 0 0 14px rgba(99,102,241,0.4); }
+  .btn-sm-tg {
+    background: transparent;
+    border: 1px solid rgba(99,102,241,0.4);
+    transition: background 0.18s, transform 0.15s, border-color 0.18s, box-shadow 0.18s;
+  }
+  .btn-sm-tg:hover {
+    background: rgba(99,102,241,0.12);
+    border-color: rgba(99,102,241,0.65);
+    transform: scale(1.03);
+    box-shadow: 0 0 14px rgba(99,102,241,0.25);
+  }
+
+  /* Анимация появления блоков */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up {
+    opacity: 0;
+    animation: fadeSlideUp 0.45s ease forwards;
+  }
+  .fade-up.visible { animation-play-state: running; }
+  .delay-1 { animation-delay: 0.05s; }
+  .delay-2 { animation-delay: 0.12s; }
+  .delay-3 { animation-delay: 0.19s; }
+  .delay-4 { animation-delay: 0.26s; }
+  .delay-5 { animation-delay: 0.33s; }
+  .delay-6 { animation-delay: 0.40s; }
 
   /* Типографика */
   .gradient-text {

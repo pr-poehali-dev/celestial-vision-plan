@@ -1,11 +1,40 @@
+import { useEffect, useRef } from "react"
 import Icon from "@/components/ui/icon"
 import { LINKS, LOGO_URL, avatars, features, vipBullets } from "./constants"
+
+function useFadeUp(ref: React.RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect() } },
+      { threshold: 0.1 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [ref])
+}
+
+function FadeSection({ id, className, children, style }: {
+  id?: string
+  className?: string
+  children: React.ReactNode
+  style?: React.CSSProperties
+}) {
+  const ref = useRef<HTMLElement>(null)
+  useFadeUp(ref)
+  return (
+    <section ref={ref} id={id} className={`fade-up ${className ?? ""}`} style={style}>
+      {children}
+    </section>
+  )
+}
 
 export default function Sections() {
   return (
     <>
       {/* ── КОМУ ПОДОЙДЁТ ────────────────────────────────────────────────── */}
-      <section id="for-whom" className="px-6 py-14 max-w-3xl mx-auto" style={{ scrollMarginTop: "60px" }}>
+      <FadeSection id="for-whom" className="px-6 py-14 max-w-3xl mx-auto" style={{ scrollMarginTop: "60px" }}>
         <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Кому подойдёт RTrader</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {avatars.map((a, i) => (
@@ -20,18 +49,18 @@ export default function Sections() {
             </div>
           ))}
         </div>
-      </section>
+      </FadeSection>
 
       <hr className="section-divider border max-w-3xl mx-auto" />
 
       {/* ── ЧТО ВНУТРИ ───────────────────────────────────────────────────── */}
-      <section id="inside" className="px-6 py-14 max-w-3xl mx-auto" style={{ scrollMarginTop: "60px" }}>
+      <FadeSection id="inside" className="px-6 py-14 max-w-3xl mx-auto" style={{ scrollMarginTop: "60px" }}>
         <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Что внутри RTrader</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {features.map((f, i) => {
             const inner = (
               <div className="flex gap-4">
-                <div className={`w-10 h-10 rounded-xl ${f.iconStyle} flex items-center justify-center flex-shrink-0`}>
+                <div className={`card-icon w-10 h-10 rounded-xl ${f.iconStyle} flex items-center justify-center flex-shrink-0`}>
                   <Icon name={f.icon} fallback="Star" size={20} className={f.iconColor} />
                 </div>
                 <div>
@@ -49,22 +78,22 @@ export default function Sections() {
                 href={f.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-glass rounded-2xl p-6 block"
+                className={`card-glass rounded-2xl p-6 block delay-${i + 1}`}
                 style={{ textDecoration: "none" }}
               >
                 {inner}
               </a>
             ) : (
-              <div key={i} className="card-glass rounded-2xl p-6">{inner}</div>
+              <div key={i} className={`card-glass rounded-2xl p-6 delay-${i + 1}`}>{inner}</div>
             )
           })}
         </div>
-      </section>
+      </FadeSection>
 
       <hr className="section-divider border max-w-3xl mx-auto" />
 
       {/* ── VIP ──────────────────────────────────────────────────────────── */}
-      <section id="vip" className="px-6 py-14 max-w-2xl mx-auto text-center" style={{ scrollMarginTop: "60px" }}>
+      <FadeSection id="vip" className="px-6 py-14 max-w-2xl mx-auto text-center" style={{ scrollMarginTop: "60px" }}>
         <div
           className="inline-flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full mb-6"
           style={{ background: "rgba(255,184,0,0.12)", border: "1px solid rgba(255,184,0,0.25)", color: "#FFB800" }}
@@ -89,21 +118,32 @@ export default function Sections() {
             </div>
           ))}
         </div>
-        <a
-          href={LINKS.vipApp}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-vip inline-flex items-center gap-2 text-white font-semibold px-8 py-3 rounded-xl"
-        >
-          <Icon name="Crown" size={18} />
-          Перейти в VIP‑приложение
-        </a>
-      </section>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <a
+            href={LINKS.vipApp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-sm-web inline-flex items-center justify-center gap-2 text-white font-semibold px-6 py-2.5 rounded-xl text-sm"
+          >
+            <Icon name="Monitor" size={16} />
+            VIP в веб‑версии
+          </a>
+          <a
+            href={LINKS.vipBot}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-sm-tg inline-flex items-center justify-center gap-2 text-white font-semibold px-6 py-2.5 rounded-xl text-sm"
+          >
+            <Icon name="Send" size={16} />
+            VIP в Telegram
+          </a>
+        </div>
+      </FadeSection>
 
       <hr className="section-divider border max-w-3xl mx-auto" />
 
       {/* ── КОНКУРСЫ И ТУРНИРЫ ───────────────────────────────────────────── */}
-      <section id="tournaments" className="px-6 py-14 max-w-2xl mx-auto text-center" style={{ scrollMarginTop: "60px" }}>
+      <FadeSection id="tournaments" className="px-6 py-14 max-w-2xl mx-auto text-center" style={{ scrollMarginTop: "60px" }}>
         <div
           className="inline-flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full mb-6"
           style={{ background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.25)", color: "#a855f7" }}
@@ -130,12 +170,12 @@ export default function Sections() {
           <Icon name="Trophy" size={18} />
           Смотреть турниры
         </a>
-      </section>
+      </FadeSection>
 
       <hr className="section-divider border max-w-3xl mx-auto" />
 
       {/* ── ОБ АВТОРЕ ────────────────────────────────────────────────────── */}
-      <section id="author" className="px-6 py-14 max-w-2xl mx-auto" style={{ scrollMarginTop: "60px" }}>
+      <FadeSection id="author" className="px-6 py-14 max-w-2xl mx-auto" style={{ scrollMarginTop: "60px" }}>
         <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Об авторе</h2>
         <div className="card-glass rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-8">
           <img
@@ -167,7 +207,7 @@ export default function Sections() {
             </div>
           </div>
         </div>
-      </section>
+      </FadeSection>
     </>
   )
 }

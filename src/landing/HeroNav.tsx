@@ -86,8 +86,8 @@ export default function HeroNav() {
 
       {/* ── НАВИГАЦИЯ ────────────────────────────────────────────────────── */}
       <div
-        className={`nav-bar w-full py-2 transition-all duration-300 ${navSticky ? "sticky top-0" : ""}`}
-        style={{ zIndex: 50 }}
+        className={`nav-bar w-full transition-all duration-300 ${navSticky ? "sticky top-0" : ""}`}
+        style={{ zIndex: 50, paddingTop: "10px", paddingBottom: "10px" }}
       >
         <div className="nav-scroll flex items-center gap-1 px-4 max-w-3xl mx-auto">
           {NAV_ITEMS.map(item => (
