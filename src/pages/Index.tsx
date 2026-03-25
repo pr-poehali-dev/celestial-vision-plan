@@ -4,15 +4,29 @@ import { Avatar } from "@/components/Avatar"
 import { SocialIcon } from "@/components/SocialIcon"
 import Icon from "@/components/ui/icon"
 
+// ─── Единый конфиг ссылок ────────────────────────────────────────────────────
+// Чтобы поменять URL — меняй только здесь, не трогая разметку ниже
+const LINKS = {
+  telegram:    "https://t.me/RTrader11",
+  vipApp:      "https://web-app-hosting--preview.poehali.dev/",
+  reflections: "https://t.me/traders_reflections",
+  tournaments: "https://web-app-hosting--preview.poehali.dev/", // временный — заменить на URL сайта‑хаба
+  chat:        "https://t.me/+We1CNiMHWOYxOWQy",
+  reviews:     "https://t.me/RTraderReviews",
+  knowledge:   "https://t.me/+oph99Gpiy_FmYjUy",
+  vk:          "https://vk.com/RTrader11",
+  rutube:      "https://rutube.ru/channel/71487062",
+  tpulse:      "https://www.tbank.ru/invest/social/profile/RTrader11/",
+}
+
 const LOGO_URL = "https://cdn.poehali.dev/files/a5faa196-2609-46d4-ab06-89def373abec.jpg"
 
+// ─── CSS ─────────────────────────────────────────────────────────────────────
 const backgroundStyle = `
   .bg-pattern {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background-image:
       linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
@@ -20,34 +34,23 @@ const backgroundStyle = `
     pointer-events: none;
     z-index: 1;
   }
-  .content {
-    position: relative;
-    z-index: 2;
-  }
-  .section-divider {
-    border-color: rgba(255,255,255,0.06);
-  }
+  .content { position: relative; z-index: 2; }
+  .section-divider { border-color: rgba(255,255,255,0.06); }
   .card-glass {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.07);
     backdrop-filter: blur(4px);
+    transition: border-color 0.2s;
   }
+  .card-glass:hover { border-color: rgba(255,255,255,0.14); }
   .vip-card {
     background: linear-gradient(135deg, rgba(255,180,0,0.1), rgba(255,60,80,0.06));
     border: 1px solid rgba(255,180,0,0.2);
   }
-  .faq-item {
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-  .btn-primary {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    transition: opacity 0.2s;
-  }
+  .faq-item { border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .btn-primary { background: linear-gradient(135deg, #3b82f6, #6366f1); transition: opacity 0.2s; }
   .btn-primary:hover { opacity: 0.88; }
-  .btn-vip {
-    background: linear-gradient(135deg, #FFB800, #FF3C50);
-    transition: opacity 0.2s;
-  }
+  .btn-vip { background: linear-gradient(135deg, #FFB800, #FF3C50); transition: opacity 0.2s; }
   .btn-vip:hover { opacity: 0.88; }
   .gradient-text {
     background: linear-gradient(135deg, #FFB800, #FF3C50, #a855f7);
@@ -59,22 +62,56 @@ const backgroundStyle = `
     background: linear-gradient(135deg, rgba(59,130,246,0.25), rgba(99,102,241,0.15));
     border: 1px solid rgba(99,102,241,0.2);
   }
-  .avatar-ring {
-    border: 2px solid rgba(255,184,0,0.4);
+  .icon-accent-purple {
+    background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(99,102,241,0.12));
+    border: 1px solid rgba(168,85,247,0.25);
   }
-  .logo-img {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
-    object-fit: cover;
+  .icon-accent-teal {
+    background: linear-gradient(135deg, rgba(20,184,166,0.2), rgba(59,130,246,0.12));
+    border: 1px solid rgba(20,184,166,0.25);
   }
+  .avatar-ring { border: 2px solid rgba(255,184,0,0.4); border-radius: 9999px; }
+  .logo-img { width: 56px; height: 56px; border-radius: 14px; object-fit: cover; }
 `
 
+// ─── Данные ───────────────────────────────────────────────────────────────────
 const features = [
-  { icon: "BookOpen", title: "Обучение и база знаний", desc: "Структурированные материалы — от основ до продвинутых стратегий" },
-  { icon: "TrendingUp", title: "Аналитика и торговые идеи", desc: "Разборы рынка, точки входа и актуальные сделки от практикующего трейдера" },
-  { icon: "Users", title: "Комьюнити трейдеров", desc: "Живое общение, разборы сделок и поддержка единомышленников в Telegram" },
-  { icon: "Crown", title: "VIP‑формат", desc: "Закрытый канал с персональными идеями, точным входом и сопровождением" },
+  {
+    icon: "BookOpen", iconStyle: "icon-accent", iconColor: "text-indigo-300",
+    title: "Обучение и база знаний",
+    desc: "Структурированные материалы — от основ до продвинутых стратегий",
+    href: null,
+  },
+  {
+    icon: "TrendingUp", iconStyle: "icon-accent", iconColor: "text-indigo-300",
+    title: "Аналитика и торговые идеи",
+    desc: "Разборы рынка, точки входа и актуальные сделки от практикующего трейдера",
+    href: null,
+  },
+  {
+    icon: "Users", iconStyle: "icon-accent", iconColor: "text-indigo-300",
+    title: "Комьюнити трейдеров",
+    desc: "Живое общение, разборы сделок и поддержка единомышленников в Telegram",
+    href: null,
+  },
+  {
+    icon: "Crown", iconStyle: "icon-accent", iconColor: "text-indigo-300",
+    title: "VIP‑формат",
+    desc: "Закрытый канал с персональными идеями, точным входом и сопровождением",
+    href: null,
+  },
+  {
+    icon: "Trophy", iconStyle: "icon-accent-purple", iconColor: "text-purple-300",
+    title: "Конкурсы и турниры",
+    desc: "Онлайн‑соревнования на демо‑счётах: ведите выбранный актив, соревнуйтесь по доходности и набирайте опыт без реального риска.",
+    href: LINKS.tournaments,
+  },
+  {
+    icon: "BookMarked", iconStyle: "icon-accent-teal", iconColor: "text-teal-300",
+    title: "Рефлексии трейдера",
+    desc: "Статьи и заметки о психологии трейдинга, дисциплине и работе с эмоциями. Разбор типичных ошибок и внутренних состояний трейдера.",
+    href: LINKS.reflections,
+  },
 ]
 
 const avatars = [
@@ -85,20 +122,37 @@ const avatars = [
 ]
 
 const vipBullets = [
-  { icon: "Zap", text: "Торговые идеи несколько раз в неделю — конкретные, с точкой входа и стопом" },
-  { icon: "BarChart2", text: "Акции, фьючерсы, крипто — широкий охват рынков" },
-  { icon: "Shield", text: "Жёсткий риск‑менеджмент: никакой «ставки всё»" },
+  { icon: "Zap",           text: "Торговые идеи несколько раз в неделю — конкретные, с точкой входа и стопом" },
+  { icon: "BarChart2",     text: "Акции, фьючерсы, крипто — широкий охват рынков" },
+  { icon: "Shield",        text: "Жёсткий риск‑менеджмент: никакой «ставки всё»" },
   { icon: "MessageCircle", text: "Разборы сделок и обратная связь в закрытом чате" },
+  { icon: "Lock",          text: "Доступ через закрытый Telegram‑канал и веб‑приложение VIP‑клуба" },
 ]
 
 const faq = [
-  { q: "Что такое RTrader?", a: "RTrader — образовательный хаб и сообщество для трейдеров. Здесь аналитика, обучение, конкурсы и VIP‑подписка с персональными торговыми идеями." },
-  { q: "Чем VIP отличается от бесплатного канала?", a: "В VIP — конкретные сделки с точками входа/выхода, стоп‑лоссами и сопровождением. Бесплатный канал — общая аналитика и обучающие материалы." },
-  { q: "Что такое конкурсы и турниры?", a: "Соревнования на демо‑счёте: участники ведут реальные активы и соревнуются по доходности. Хороший способ прокачать навыки без риска." },
-  { q: "Я новичок. Мне подойдёт?", a: "Да! Для новичков есть база знаний и структурированное обучение. Поддержка комьюнити помогает не потеряться на старте." },
-  { q: "Как связаться с автором?", a: "Напишите в Telegram‑чат (@zeryansky7) или в комьюнити-чат. Ссылки в подвале страницы." },
+  {
+    q: "Что такое RTrader?",
+    a: "RTrader — онлайн‑платформа и сообщество для трейдеров. Здесь аналитика, обучение, конкурсы на демо‑счётах, психологические материалы и VIP‑подписка с персональными торговыми идеями.",
+  },
+  {
+    q: "Чем VIP отличается от бесплатного канала?",
+    a: "В VIP — конкретные сделки с точками входа/выхода, стоп‑лоссами и сопровождением. Доступ через закрытый Telegram‑канал и веб‑приложение. Бесплатный канал — общая аналитика и обучающие материалы.",
+  },
+  {
+    q: "Что такое конкурсы и турниры?",
+    a: "Соревнования на демо‑счёте с виртуальным капиталом: участники ведут реальные активы и соревнуются по доходности. Никакого реального финансового риска — только практика, азарт и рейтинг.",
+  },
+  {
+    q: "Я новичок. Мне подойдёт?",
+    a: "Да! Для новичков есть база знаний и структурированное обучение. Поддержка комьюнити помогает не потеряться на старте. Конкурсы на демо — отличный способ набрать опыт без риска.",
+  },
+  {
+    q: "Как связаться с автором?",
+    a: "Напишите в Telegram‑чат (@zeryansky7) или в комьюнити‑чат. Ссылки в подвале страницы.",
+  },
 ]
 
+// ─── Компонент ────────────────────────────────────────────────────────────────
 export default function Index() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
@@ -108,12 +162,11 @@ export default function Index() {
       style={{ background: "radial-gradient(ellipse at 50% 0%, #1a1a4e 0%, #0D0E2C 50%, #070712 100%)" }}
     >
       <style>{backgroundStyle}</style>
-      <div className="bg-pattern"></div>
+      <div className="bg-pattern" />
       <div className="content">
 
-        {/* HERO */}
+        {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="flex flex-col items-center justify-center text-center px-6 pt-20 pb-16 max-w-2xl mx-auto">
-          {/* Logo */}
           <div className="mb-8 flex items-center gap-3">
             <img src={LOGO_URL} alt="RTrader логотип" className="logo-img" />
             <div className="text-left">
@@ -128,13 +181,15 @@ export default function Index() {
             Торгуй осознанно.<br />
             <span className="gradient-text">Расти вместе с рынком.</span>
           </h1>
-          <p className="text-lg text-gray-300 mb-10 max-w-xl">
-            RTrader — хаб для тех, кто хочет понимать рынок, получать точные торговые идеи и развиваться в трейдинге. Бесплатный Telegram‑канал и VIP‑подписка для серьёзного результата.
+
+          <p className="text-lg text-gray-300 mb-10 max-w-xl leading-relaxed">
+            RTrader — онлайн‑платформа для тех, кто хочет понимать рынок, не просто получать точные торговые идеи,
+            но по‑настоящему развиваться в трейдинге и участвовать в турнирах без реального риска.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <a
-              href="https://t.me/RTrader11"
+              href={LINKS.telegram}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary flex items-center justify-center gap-2 text-white font-semibold px-6 py-3 rounded-xl"
@@ -143,7 +198,7 @@ export default function Index() {
               В Telegram‑канал
             </a>
             <a
-              href="https://web-app-hosting--preview.poehali.dev/"
+              href={LINKS.vipApp}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-vip flex items-center justify-center gap-2 text-white font-semibold px-6 py-3 rounded-xl"
@@ -153,18 +208,17 @@ export default function Index() {
             </a>
           </div>
 
-          {/* Avatars counter */}
           <div className="flex items-center justify-center mt-10">
             <div className="flex -space-x-2 mr-4">
-              <div className="avatar-ring rounded-full"><Avatar initials="АК" index={0} /></div>
-              <div className="avatar-ring rounded-full"><Avatar initials="МП" index={1} /></div>
-              <div className="avatar-ring rounded-full"><Avatar initials="ЕС" index={2} /></div>
+              <div className="avatar-ring"><Avatar initials="АК" index={0} /></div>
+              <div className="avatar-ring"><Avatar initials="МП" index={1} /></div>
+              <div className="avatar-ring"><Avatar initials="ЕС" index={2} /></div>
             </div>
-            <p className="text-gray-300 font-medium">1 200+ трейдеров уже внутри</p>
+            <p className="text-gray-300 font-medium">2 500+ трейдеров уже внутри</p>
           </div>
         </section>
 
-        {/* WHO IS IT FOR */}
+        {/* ── КОМУ ПОДОЙДЁТ ────────────────────────────────────────────────── */}
         <section className="px-6 py-14 max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Кому подойдёт RTrader</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -184,40 +238,65 @@ export default function Index() {
 
         <hr className="section-divider border max-w-3xl mx-auto" />
 
-        {/* WHAT'S INSIDE */}
+        {/* ── ЧТО ВНУТРИ ───────────────────────────────────────────────────── */}
         <section className="px-6 py-14 max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Что внутри RTrader</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {features.map((f, i) => (
-              <div key={i} className="card-glass rounded-2xl p-6 flex gap-4">
-                <div className="w-10 h-10 rounded-xl icon-accent flex items-center justify-center flex-shrink-0">
-                  <Icon name={f.icon} fallback="Star" size={20} className="text-indigo-300" />
+            {features.map((f, i) => {
+              const inner = (
+                <div className="flex gap-4">
+                  <div className={`w-10 h-10 rounded-xl ${f.iconStyle} flex items-center justify-center flex-shrink-0`}>
+                    <Icon name={f.icon} fallback="Star" size={20} className={f.iconColor} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white mb-1 flex items-center gap-1">
+                      {f.title}
+                      {f.href && <Icon name="ArrowUpRight" size={13} className="opacity-40 mt-px" />}
+                    </h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-white mb-1">{f.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
-                </div>
-              </div>
-            ))}
+              )
+              return f.href ? (
+                <a
+                  key={i}
+                  href={f.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="card-glass rounded-2xl p-6 block"
+                  style={{ textDecoration: "none" }}
+                >
+                  {inner}
+                </a>
+              ) : (
+                <div key={i} className="card-glass rounded-2xl p-6">{inner}</div>
+              )
+            })}
           </div>
         </section>
 
         <hr className="section-divider border max-w-3xl mx-auto" />
 
-        {/* VIP */}
+        {/* ── VIP ──────────────────────────────────────────────────────────── */}
         <section className="px-6 py-14 max-w-2xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full mb-6"
-            style={{ background: "rgba(255,184,0,0.12)", border: "1px solid rgba(255,184,0,0.25)", color: "#FFB800" }}>
+          <div
+            className="inline-flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full mb-6"
+            style={{ background: "rgba(255,184,0,0.12)", border: "1px solid rgba(255,184,0,0.25)", color: "#FFB800" }}
+          >
             <Icon name="Crown" size={14} />
             VIP‑подписка
           </div>
           <h2 className="text-2xl font-bold mb-4 text-gray-100">Торговые идеи, которым можно доверять</h2>
-          <p className="text-gray-400 mb-8 text-sm">Закрытый канал с конкретными сделками, точными входами и жёстким риск‑менеджментом.</p>
+          <p className="text-gray-400 mb-8 text-sm">
+            Закрытый канал с конкретными сделками, точными входами и жёстким риск‑менеджментом.
+          </p>
           <div className="vip-card rounded-2xl p-6 text-left mb-8 space-y-4">
             {vipBullets.map((b, i) => (
               <div key={i} className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                  style={{ background: "rgba(255,184,0,0.15)", border: "1px solid rgba(255,184,0,0.2)" }}>
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                  style={{ background: "rgba(255,184,0,0.15)", border: "1px solid rgba(255,184,0,0.2)" }}
+                >
                   <Icon name={b.icon} fallback="Star" size={16} style={{ color: "#FFB800" }} />
                 </div>
                 <p className="text-gray-300 text-sm leading-relaxed">{b.text}</p>
@@ -225,7 +304,7 @@ export default function Index() {
             ))}
           </div>
           <a
-            href="https://web-app-hosting--preview.poehali.dev/"
+            href={LINKS.vipApp}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-vip inline-flex items-center gap-2 text-white font-semibold px-8 py-3 rounded-xl"
@@ -237,20 +316,29 @@ export default function Index() {
 
         <hr className="section-divider border max-w-3xl mx-auto" />
 
-        {/* TOURNAMENTS */}
+        {/* ── КОНКУРСЫ И ТУРНИРЫ ───────────────────────────────────────────── */}
         <section className="px-6 py-14 max-w-2xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full mb-6"
-            style={{ background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.25)", color: "#a855f7" }}>
+          <div
+            className="inline-flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full mb-6"
+            style={{ background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.25)", color: "#a855f7" }}
+          >
             <Icon name="Trophy" size={14} />
             Конкурсы и турниры
           </div>
           <h2 className="text-2xl font-bold mb-4 text-gray-100">Соревнуйся — прокачивай навык</h2>
           <p className="text-gray-300 mb-3 text-sm leading-relaxed max-w-lg mx-auto">
-            Участники ведут реальные активы на демо‑счёте и соревнуются по доходности. Никакого реального риска — только практика, азарт и рейтинг.
+            Участники ведут выбранный актив на{" "}
+            <strong className="text-white">демо‑счёте с виртуальным капиталом</strong>{" "}
+            и соревнуются по доходности. Это формат тренировки и соревнования —
+            без реального финансового риска.
           </p>
-          <p className="text-gray-500 text-sm mb-8">Идеально для тех, кто хочет набрать опыт перед торговлей реальными деньгами.</p>
+          <p className="text-gray-500 text-sm mb-8">
+            Идеально для тех, кто хочет набрать опыт перед торговлей реальными деньгами.
+          </p>
           <a
-            href="#"
+            href={LINKS.tournaments}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200"
             style={{ border: "1px solid rgba(168,85,247,0.35)", background: "rgba(168,85,247,0.08)" }}
           >
@@ -261,7 +349,7 @@ export default function Index() {
 
         <hr className="section-divider border max-w-3xl mx-auto" />
 
-        {/* AUTHOR */}
+        {/* ── ОБ АВТОРЕ ────────────────────────────────────────────────────── */}
         <section className="px-6 py-14 max-w-2xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Об авторе</h2>
           <div className="card-glass rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-8">
@@ -298,7 +386,7 @@ export default function Index() {
 
         <hr className="section-divider border max-w-3xl mx-auto" />
 
-        {/* FAQ */}
+        {/* ── FAQ ──────────────────────────────────────────────────────────── */}
         <section className="px-6 py-14 max-w-2xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Частые вопросы</h2>
           <div className="space-y-0">
@@ -308,7 +396,9 @@ export default function Index() {
                   className="w-full text-left flex items-center justify-between gap-4 group"
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
-                  <span className="font-medium text-gray-100 group-hover:text-white transition-colors">{item.q}</span>
+                  <span className="font-medium text-gray-100 group-hover:text-white transition-colors">
+                    {item.q}
+                  </span>
                   <Icon
                     name={openFaq === i ? "ChevronUp" : "ChevronDown"}
                     size={18}
@@ -325,52 +415,65 @@ export default function Index() {
 
         <hr className="section-divider border max-w-3xl mx-auto" />
 
-        {/* FOOTER */}
+        {/* ── FOOTER ───────────────────────────────────────────────────────── */}
         <footer className="px-6 py-10 max-w-2xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <img src={LOGO_URL} alt="RTrader" className="w-8 h-8 rounded-lg object-cover" />
             <div className="text-left leading-none">
-              <div className="font-extrabold text-sm">R<span style={{ color: "#FFB800" }}>Trade</span>R</div>
+              <div className="font-extrabold text-sm">
+                R<span style={{ color: "#FFB800" }}>Trade</span>R
+              </div>
               <div className="text-xs text-gray-500 tracking-widest uppercase">Investing</div>
             </div>
           </div>
+
           <p className="text-gray-500 text-sm mb-6">Торгуй осознанно. Расти вместе с рынком.</p>
-          <div className="flex justify-center gap-5 mb-4 flex-wrap">
+
+          <div className="flex justify-center gap-5 mb-6 flex-wrap">
             <SocialIcon
-              href="https://t.me/RTrader11"
+              href={LINKS.telegram}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Telegram-канал"
               icon={<Icon name="Send" size={20} className="text-gray-400 hover:text-white transition-colors" />}
             />
             <SocialIcon
-              href="https://vk.com/RTrader11"
+              href={LINKS.vk}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="VK"
               icon={<Icon name="Users" size={20} className="text-gray-400 hover:text-white transition-colors" />}
             />
             <SocialIcon
-              href="https://rutube.ru/channel/71487062"
+              href={LINKS.rutube}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="RUTUBE"
               icon={<Icon name="Play" size={20} className="text-gray-400 hover:text-white transition-colors" />}
             />
             <SocialIcon
-              href="https://www.tbank.ru/invest/social/profile/RTrader11/"
+              href={LINKS.tpulse}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Т-пульс"
               icon={<Icon name="TrendingUp" size={20} className="text-gray-400 hover:text-white transition-colors" />}
             />
           </div>
-          <div className="flex justify-center gap-4 mb-4 text-sm">
-            <a href="https://t.me/+We1CNiMHWOYxOWQy" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 transition-colors">Чат</a>
-            <a href="https://t.me/RTraderReviews" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 transition-colors">Отзывы</a>
-            <a href="https://t.me/+oph99Gpiy_FmYjUy" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 transition-colors">База знаний</a>
+
+          <div className="flex justify-center gap-4 mb-4 text-sm flex-wrap">
+            <a href={LINKS.chat} target="_blank" rel="noopener noreferrer"
+              className="text-gray-500 hover:text-gray-300 transition-colors">Чат</a>
+            <a href={LINKS.reviews} target="_blank" rel="noopener noreferrer"
+              className="text-gray-500 hover:text-gray-300 transition-colors">Отзывы</a>
+            <a href={LINKS.knowledge} target="_blank" rel="noopener noreferrer"
+              className="text-gray-500 hover:text-gray-300 transition-colors">База знаний</a>
+            <a href={LINKS.reflections} target="_blank" rel="noopener noreferrer"
+              className="text-gray-500 hover:text-gray-300 transition-colors">Рефлексии трейдера</a>
           </div>
-          <p className="text-gray-700 text-xs mb-2">Информация в канале не является индивидуальной инвестиционной рекомендацией.</p>
+
+          <p className="text-gray-700 text-xs mb-2">
+            Информация в канале не является индивидуальной инвестиционной рекомендацией.
+          </p>
           <p className="text-gray-600 text-xs">© 2025 RTrader · Все права защищены</p>
         </footer>
 
