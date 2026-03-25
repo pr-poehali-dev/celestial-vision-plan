@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Toaster } from "@/components/ui/toaster"
 import { Avatar } from "@/components/Avatar"
 import { SocialIcon } from "@/components/SocialIcon"
@@ -21,6 +21,17 @@ const LINKS = {
 
 const LOGO_URL = "https://cdn.poehali.dev/files/a5faa196-2609-46d4-ab06-89def373abec.jpg"
 
+// ─── Пункты навигации ─────────────────────────────────────────────────────────
+const NAV_ITEMS = [
+  { label: "О платформе",        anchor: "about" },
+  { label: "Кому подойдёт",      anchor: "for-whom" },
+  { label: "Что внутри",         anchor: "inside" },
+  { label: "VIP‑подписка",       anchor: "vip" },
+  { label: "Конкурсы",           anchor: "tournaments" },
+  { label: "Об авторе",          anchor: "author" },
+  { label: "FAQ",                anchor: "faq" },
+]
+
 // ─── CSS ─────────────────────────────────────────────────────────────────────
 const backgroundStyle = `
   .bg-pattern {
@@ -36,6 +47,38 @@ const backgroundStyle = `
   }
   .content { position: relative; z-index: 2; }
   .section-divider { border-color: rgba(255,255,255,0.06); }
+
+  /* Навигация */
+  .nav-bar {
+    background: rgba(13,14,44,0.85);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .nav-pill {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: color 0.2s, background 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    background: transparent;
+  }
+  .nav-pill:hover, .nav-pill.active {
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+  }
+  .nav-scroll {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-scroll::-webkit-scrollbar { display: none; }
+
+  /* Карточки */
   .card-glass {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.07);
@@ -48,16 +91,22 @@ const backgroundStyle = `
     border: 1px solid rgba(255,180,0,0.2);
   }
   .faq-item { border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+  /* Кнопки */
   .btn-primary { background: linear-gradient(135deg, #3b82f6, #6366f1); transition: opacity 0.2s; }
   .btn-primary:hover { opacity: 0.88; }
   .btn-vip { background: linear-gradient(135deg, #FFB800, #FF3C50); transition: opacity 0.2s; }
   .btn-vip:hover { opacity: 0.88; }
+
+  /* Типографика */
   .gradient-text {
     background: linear-gradient(135deg, #FFB800, #FF3C50, #a855f7);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* Иконки */
   .icon-accent {
     background: linear-gradient(135deg, rgba(59,130,246,0.25), rgba(99,102,241,0.15));
     border: 1px solid rgba(99,102,241,0.2);
@@ -70,8 +119,11 @@ const backgroundStyle = `
     background: linear-gradient(135deg, rgba(20,184,166,0.2), rgba(59,130,246,0.12));
     border: 1px solid rgba(20,184,166,0.25);
   }
+
+  /* Прочее */
   .avatar-ring { border: 2px solid rgba(255,184,0,0.4); border-radius: 9999px; }
   .logo-img { width: 56px; height: 56px; border-radius: 14px; object-fit: cover; }
+  html { scroll-behavior: smooth; }
 `
 
 // ─── Данные ───────────────────────────────────────────────────────────────────
@@ -103,7 +155,7 @@ const features = [
   {
     icon: "Trophy", iconStyle: "icon-accent-purple", iconColor: "text-purple-300",
     title: "Конкурсы и турниры",
-    desc: "Онлайн‑соревнования на демо‑счётах: ведите выбранный актив, соревнуйтесь по доходности и набирайте опыт без реального риска.",
+    desc: "Виртуальная торговля с турнирной таблицей: месяц торговли на демо‑счёте, рост в рейтинге и соревнование по доходности без реального риска.",
     href: LINKS.tournaments,
   },
   {
@@ -132,7 +184,7 @@ const vipBullets = [
 const faq = [
   {
     q: "Что такое RTrader?",
-    a: "RTrader — онлайн‑платформа и сообщество для трейдеров. Здесь аналитика, обучение, конкурсы на демо‑счётах, психологические материалы и VIP‑подписка с персональными торговыми идеями.",
+    a: "RTrader — онлайн‑платформа и сообщество для трейдеров. Здесь аналитика, обучение, конкурсы на демо‑счётах, материалы по психологии трейдинга и VIP‑подписка с персональными торговыми идеями.",
   },
   {
     q: "Чем VIP отличается от бесплатного канала?",
@@ -140,7 +192,7 @@ const faq = [
   },
   {
     q: "Что такое конкурсы и турниры?",
-    a: "Соревнования на демо‑счёте с виртуальным капиталом: участники ведут реальные активы и соревнуются по доходности. Никакого реального финансового риска — только практика, азарт и рейтинг.",
+    a: "Виртуальная торговля с турнирной таблицей: в течение месяца участники ведут выбранный актив на демо‑счёте, соревнуются по доходности и поднимаются в рейтинге. Никакого реального финансового риска.",
   },
   {
     q: "Я новичок. Мне подойдёт?",
@@ -152,9 +204,35 @@ const faq = [
   },
 ]
 
+// ─── Хелпер плавного скролла ─────────────────────────────────────────────────
+function scrollTo(anchor: string) {
+  const el = document.getElementById(anchor)
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
+}
+
 // ─── Компонент ────────────────────────────────────────────────────────────────
 export default function Index() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [activeAnchor, setActiveAnchor] = useState<string>("")
+  const [navSticky, setNavSticky] = useState(false)
+
+  // Следим за скроллом — подсвечиваем активный раздел
+  useEffect(() => {
+    const anchors = NAV_ITEMS.map(n => n.anchor)
+    const onScroll = () => {
+      setNavSticky(window.scrollY > 60)
+      for (let i = anchors.length - 1; i >= 0; i--) {
+        const el = document.getElementById(anchors[i])
+        if (el && el.getBoundingClientRect().top <= 120) {
+          setActiveAnchor(anchors[i])
+          return
+        }
+      }
+      setActiveAnchor("")
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
   return (
     <main
@@ -166,7 +244,7 @@ export default function Index() {
       <div className="content">
 
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="flex flex-col items-center justify-center text-center px-6 pt-20 pb-16 max-w-2xl mx-auto">
+        <section id="about" className="flex flex-col items-center justify-center text-center px-6 pt-20 pb-16 max-w-2xl mx-auto">
           <div className="mb-8 flex items-center gap-3">
             <img src={LOGO_URL} alt="RTrader логотип" className="logo-img" />
             <div className="text-left">
@@ -218,8 +296,26 @@ export default function Index() {
           </div>
         </section>
 
+        {/* ── НАВИГАЦИЯ ────────────────────────────────────────────────────── */}
+        <div
+          className={`nav-bar w-full py-2 transition-all duration-300 ${navSticky ? "sticky top-0" : ""}`}
+          style={{ zIndex: 50 }}
+        >
+          <div className="nav-scroll flex items-center gap-1 px-4 max-w-3xl mx-auto">
+            {NAV_ITEMS.map(item => (
+              <button
+                key={item.anchor}
+                className={`nav-pill ${activeAnchor === item.anchor ? "active" : ""}`}
+                onClick={() => scrollTo(item.anchor)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* ── КОМУ ПОДОЙДЁТ ────────────────────────────────────────────────── */}
-        <section className="px-6 py-14 max-w-3xl mx-auto">
+        <section id="for-whom" className="px-6 py-14 max-w-3xl mx-auto" style={{ scrollMarginTop: "60px" }}>
           <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Кому подойдёт RTrader</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {avatars.map((a, i) => (
@@ -239,7 +335,7 @@ export default function Index() {
         <hr className="section-divider border max-w-3xl mx-auto" />
 
         {/* ── ЧТО ВНУТРИ ───────────────────────────────────────────────────── */}
-        <section className="px-6 py-14 max-w-3xl mx-auto">
+        <section id="inside" className="px-6 py-14 max-w-3xl mx-auto" style={{ scrollMarginTop: "60px" }}>
           <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Что внутри RTrader</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {features.map((f, i) => {
@@ -278,7 +374,7 @@ export default function Index() {
         <hr className="section-divider border max-w-3xl mx-auto" />
 
         {/* ── VIP ──────────────────────────────────────────────────────────── */}
-        <section className="px-6 py-14 max-w-2xl mx-auto text-center">
+        <section id="vip" className="px-6 py-14 max-w-2xl mx-auto text-center" style={{ scrollMarginTop: "60px" }}>
           <div
             className="inline-flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full mb-6"
             style={{ background: "rgba(255,184,0,0.12)", border: "1px solid rgba(255,184,0,0.25)", color: "#FFB800" }}
@@ -317,7 +413,7 @@ export default function Index() {
         <hr className="section-divider border max-w-3xl mx-auto" />
 
         {/* ── КОНКУРСЫ И ТУРНИРЫ ───────────────────────────────────────────── */}
-        <section className="px-6 py-14 max-w-2xl mx-auto text-center">
+        <section id="tournaments" className="px-6 py-14 max-w-2xl mx-auto text-center" style={{ scrollMarginTop: "60px" }}>
           <div
             className="inline-flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-full mb-6"
             style={{ background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.25)", color: "#a855f7" }}
@@ -327,13 +423,12 @@ export default function Index() {
           </div>
           <h2 className="text-2xl font-bold mb-4 text-gray-100">Соревнуйся — прокачивай навык</h2>
           <p className="text-gray-300 mb-3 text-sm leading-relaxed max-w-lg mx-auto">
-            Участники ведут выбранный актив на{" "}
-            <strong className="text-white">демо‑счёте с виртуальным капиталом</strong>{" "}
-            и соревнуются по доходности. Это формат тренировки и соревнования —
-            без реального финансового риска.
+            Суть турниров — виртуальная торговля с турнирной таблицей. Участники в течение месяца ведут выбранный актив на{" "}
+            <strong className="text-white">демо‑счёте</strong>, соревнуются по доходности, поднимаются в рейтинге и тренируются{" "}
+            <strong className="text-white">без риска для реальных денег</strong>.
           </p>
           <p className="text-gray-500 text-sm mb-8">
-            Идеально для тех, кто хочет набрать опыт перед торговлей реальными деньгами.
+            Идеально для тех, кто хочет набрать опыт и уверенность перед торговлей реальными деньгами.
           </p>
           <a
             href={LINKS.tournaments}
@@ -350,7 +445,7 @@ export default function Index() {
         <hr className="section-divider border max-w-3xl mx-auto" />
 
         {/* ── ОБ АВТОРЕ ────────────────────────────────────────────────────── */}
-        <section className="px-6 py-14 max-w-2xl mx-auto">
+        <section id="author" className="px-6 py-14 max-w-2xl mx-auto" style={{ scrollMarginTop: "60px" }}>
           <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Об авторе</h2>
           <div className="card-glass rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-8">
             <img
@@ -387,7 +482,7 @@ export default function Index() {
         <hr className="section-divider border max-w-3xl mx-auto" />
 
         {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-        <section className="px-6 py-14 max-w-2xl mx-auto">
+        <section id="faq" className="px-6 py-14 max-w-2xl mx-auto" style={{ scrollMarginTop: "60px" }}>
           <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Частые вопросы</h2>
           <div className="space-y-0">
             {faq.map((item, i) => (
