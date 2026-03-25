@@ -53,7 +53,7 @@ export default function HeroNav() {
           но по‑настоящему развиваться в трейдинге и участвовать в турнирах без реального риска.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto flex-wrap justify-center">
           <a
             href={LINKS.telegram}
             target="_blank"
@@ -67,10 +67,19 @@ export default function HeroNav() {
             href={LINKS.vipApp}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-vip flex items-center justify-center gap-2 text-white font-semibold px-6 py-3 rounded-xl"
+            className="btn-sm-web flex items-center justify-center gap-2 text-white font-semibold px-5 py-2.5 rounded-xl text-sm"
           >
-            <Icon name="Crown" size={18} />
-            VIP‑подписка
+            <Icon name="Monitor" size={16} />
+            VIP в веб‑версии
+          </a>
+          <a
+            href={LINKS.vipBot}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-sm-tg flex items-center justify-center gap-2 text-white font-semibold px-5 py-2.5 rounded-xl text-sm"
+          >
+            <Icon name="Send" size={16} />
+            VIP в Telegram
           </a>
         </div>
 

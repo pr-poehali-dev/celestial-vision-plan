@@ -1,15 +1,27 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { SocialIcon } from "@/components/SocialIcon"
 import Icon from "@/components/ui/icon"
 import { LINKS, LOGO_URL, faq } from "./constants"
 
 export default function FaqFooter() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const faqRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const el = faqRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect() } },
+      { threshold: 0.1 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
 
   return (
     <>
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section id="faq" className="px-6 py-14 max-w-2xl mx-auto" style={{ scrollMarginTop: "60px" }}>
+      <section ref={faqRef} id="faq" className="fade-up px-6 py-14 max-w-2xl mx-auto" style={{ scrollMarginTop: "60px" }}>
         <h2 className="text-2xl font-bold text-center mb-10 text-gray-100">Частые вопросы</h2>
         <div className="space-y-0">
           {faq.map((item, i) => (
